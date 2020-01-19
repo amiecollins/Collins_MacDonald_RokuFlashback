@@ -5,8 +5,12 @@ const vueApp = (() => {
     let vm = new Vue({
 
         data: {
-            loggedIn: true,
             currentPage: "home", // main, home, user_select, settings, movies, shows, music, video_preview, album_preview, artist_preview, video_player, music_player
+            account: {
+                id: 1,
+                email: "admin@amiecollins.ca",
+                password: "admin"
+            },
             user: {
                 id: 1,
                 name: "Amie",
@@ -20,6 +24,15 @@ const vueApp = (() => {
                 disTags: "",
                 minIMDB: 3 
             },
+            login: {
+                email: "enter email",
+                password: ""
+            },
+            register: {
+                email: "",
+                password: "",
+                checkpassword: ""
+            },
             icons: {
                 search: "",
                 settings: "",
@@ -32,6 +45,13 @@ const vueApp = (() => {
             }
         },
         methods: {
+            loggedIn(currentAccount) {
+                if (currentAccount.id > 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
 
             logoClicked() {
                 console.log("logo was clicked");
@@ -57,9 +77,38 @@ const vueApp = (() => {
             logoutClicked() {
                 console.log("logout was clicked");
             },
+            
+            logoutAccount(){
+                blankaccount = {
+                    id: 0,
+                    email: null,
+                    password: null
+                }
+                return blankaccount;
+            },
 
             loginClicked() {
                 console.log("login was clicked");
+            },
+            
+            getAccount(accountemail, accountpassword) {
+                if (accountemail === "admin@amiecollins.ca" && accountpassword === "admin") {
+                    account = {
+                        id: 1,
+                        email: "admin@amiecollins.ca",
+                        password: "admin"
+                    }
+                    alert('Welcome admin');
+                    return account;
+                } else {
+                    blankaccount = {
+                        id: 0,
+                        email: null,
+                        password: null
+                    }
+                    alert('There was a problem');
+                    return blankaccount;
+                }
             },
 
             showMovies() {

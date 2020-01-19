@@ -14,7 +14,7 @@
         <!-- HEADER BAR
             only show header bar if user is logged in and not viewing a video 
         -->
-        <header class="header-bar"><template class="top-header" v-if="currentPage !== 'player' && currentPage !== 'main'">
+        <header class="header-bar"><template class="top-header" v-if="currentPage !== 'player' && loggedIn(account)">
             <h1 class="hidden">Header Navigation Bar</h1>
             <section class="header-left">
                 <h2 class="hidden">Logo & Navigation</h2>
@@ -54,25 +54,25 @@
                         </li>
                         <li>
                             <!-- logout -->
-                            <img class="logout-icon" src="{{ icons.logout }}" alt="logout user" @click="loggedIn = false;currentPage = 'main';logoutClicked">
+                            <img class="logout-icon" src="{{ icons.logout }}" alt="logout user" @click="account = logoutAccount;currentPage = 'main';logoutClicked">
                         </li>
                     </ul>
                 </nav>
-            </section>
+            </section>`
         </template></header>
 
 
         <!-- login / register -->
         <template class="main" v-if="currentPage === 'main'"><section class="main-wrapper">
             Login:
-            <form action="admin/login.php" method="post"> 
-                <label>Email: </label><input type="email" placeholder="please enter account email" name="email"><br>
-                <label>Account Password: </label><input type="password" name="password">
-                <input type="submit" name="submit" aria-label="Login" @click="loginClicked">
+            <form id="login"> 
+                <label>Email: </label><input type="email" name="email" v-model="login.email"/><br>
+                <label>Account Password: </label><input type="password" name="password" v-model="login.password"/>
+                <input type="submit" name="submit" aria-label="Login" @click="loginClicked;account = getAccount(login.email, login.password)">
             </form>
 
             Register:
-            <form action="admin/register.php" method="post">
+            <form id="register">
                 <label>Email: </label><input type="email" placeholder="please enter account email" name="email"><br>
                 <label>New Account Password: </label><input type="password" name="password"><br>
                 <label>New Account Password (Again): </label><input type="password" name="passwordCheck"><br>
