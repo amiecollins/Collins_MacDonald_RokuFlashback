@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/main.css">
+    <title>Roku Flashback App</title>
+</head>
+<body>
+    <main id="app">
+        <!-- if user is kid, show kid changes -->
+        <link rel="stylesheet" href="css/kids.css" v-if="user.isKid">
+        <!-- HEADER BAR
+            only show header bar if user is logged in and not viewing a video 
+        -->
+        <header class="header-bar"><template class="top-header" v-if="currentPage !== 'player' && currentPage !== 'main'">
+            <h1 class="hidden">Header Navigation Bar</h1>
+            <section class="header-left">
+                <h2 class="hidden">Logo & Navigation</h2>
+                <!-- left side of bar -->
+                <img src="images/svg/Roku_logo.svg" alt="Logo" @click="logoClicked">
+                <nav class="header-media-nav"> 
+                    <!-- Available Pages (Home, Movies, TV Shows, Music etc) -->
+                    <h3 class="hidden">Media Navigation</h3>
+                    <ul>
+                        <li @click="showMovies">Movies</li>
+                        <li @click="showShows">TV Shows</li>
+                        <li @click="showMusic">Music</li>
+                    </ul>
+                </nav>
+            </section>
+            <section class="header-right">
+                <h2 class="hidden">Profile & Settings</h2>
+                <nav class="header-settings-nav"> 
+                    <!-- search, change users, settings (only show if not kid), logout -->
+                    <h3 class="hidden">Settings Navigation</h3>
+                    <ul>
+                        <li>
+                            <!-- search bar -->
+                            <img v-if="currentPage !== search" class="search-icon" src="{{ icons.search }}" alt="Search Icon" @click="searchClicked"><input type="search" class="search-bar">
+                        </li>
+                        <li>
+                            <!-- user avatar -->
+                            <img class="user-avatar" src="{{ user.avatarURL }}" alt="user profile" @click="avatarClicked">
+                        </li>
+                        <li>
+                            <!-- *only show not kid, user settings -->
+                            <img v-if="user.isKid !== true" class="settings-icon" src="{{ icons.settings }}" alt="settings" @click="settingsClicked">
+                        </li>
+                        <li>
+                            <!-- *only show if admin, admin control panel access -->
+                            <img v-if="user.isAdmin === true" class="admin-icon" src="{{ icons.admin }}" alt="admin setttings" @click="adminClicked">
+                        </li>
+                        <li>
+                            <!-- logout -->
+                            <img class="logout-icon" src="{{ icons.logout }}" alt="logout user" @click="loggedIn = false;currentPage = 'main'">
+                        </li>
+                    </ul>
+                </nav>
+            </section>
+        </template></header>
+
+
+        <!-- login / register -->
+        <template class="main" v-if="currentPage === 'main'"><section class="main-wrapper">
+            Login:
+            <form action="admin/login.php" method="post"> 
+                <label>Email: </label><input type="email" placeholder="please enter account email" name="email"><br>
+                <label>Account Password: </label><input type="password" name="password">
+                <input type="submit" name="submit" aria-label="Login" @click="loginClicked">
+            </form>
+
+            Register:
+            <form action="admin/register.php" method="post">
+                <label>Email: </label><input type="email" placeholder="please enter account email" name="email"><br>
+                <label>New Account Password: </label><input type="password" name="password"><br>
+                <label>New Account Password (Again): </label><input type="password" name="passwordCheck"><br>
+            </form>
+        </section></template>
+    </main>
+</body>
+<script src="js/main.js" type="module"></script>
+</html>
