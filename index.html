@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/main.css">
+    <title>Roku Flashback App</title>
+</head>
+<body>
+    <main id="app">
+        <!-- if user is kid, show kid changes -->
+        <link rel="stylesheet" href="css/kids.css" v-if="user.isKid">
+        <!-- HEADER BAR
+            only show header bar if user is logged in and not viewing a video 
+        -->
+        <header class="header-bar"><template class="top-header" v-if="currentPage !== 'player' && loggedIn(account)">
+            <h1 class="hidden">Header Navigation Bar</h1>
+            <section class="header-left">
+                <h2 class="hidden">Logo & Navigation</h2>
+                <!-- left side of bar -->
+                <img src="images/svg/Roku_logo.svg" alt="Logo" @click="logoClicked">
+                <nav class="header-media-nav"> 
+                    <!-- Available Pages (Home, Movies, TV Shows, Music etc) -->
+                    <h3 class="hidden">Media Navigation</h3>
+                    <ul>
+                        <li @click="showMovies">Movies</li>
+                        <li @click="showShows">TV Shows</li>
+                        <li @click="showMusic">Music</li>
+                    </ul>
+                </nav>
+            </section>
+            <section class="header-right">
+                <h2 class="hidden">Profile & Settings</h2>
+                <nav class="header-settings-nav"> 
+                    <!-- search, change users, settings (only show if not kid), logout -->
+                    <h3 class="hidden">Settings Navigation</h3>
+                    <ul>
+                        <li>
+                            <!-- search bar -->
+                            <img class="search-icon" :src="icons.search" alt="Search Icon" @click="searchClicked;searchResults = getSearchResults(searchQuery)"><input v-model="searchQuery" type="search" class="search-bar">
+                            <template v-if="searchResults !== '' || searchResults !== null"><section class="search-results">
+                                <h4 class="hidden">Search Bar</h4>
+                                <div v-for="result in searchResults">
+                                    <div class="result-container" @click="openPreview(result.media_type, result.local_id)">
+                                        <div class="result-title">
+                                            <!-- show title (if music show album & artist) and year (if tv show, include end year) -->
+                                            {{ result.title }} <span class="result_artist_album" v-if="result.media_type === 'music'">- {{ result.album }} - {{ result.artist }}</span>
+                                            <img class="result-thumbnail" :src="result.thumbnail">
+                                            {{ result.year }}<span v-if="result.media_type === 'show'"> - {{ result.end_year }}</span>
+                                            </div>
+                                        <div class="result-description">
+                                            <span class="result-genre">{{ result.genre }}</span> - <span class="result-keywords">{{ result.keywords }}</span>
+                                            {{ result.short_description }}
+                                            <div class="ratings">
+                                                <!-- IMDB Rating -->
+                                                <div class="result-imdb-rating">
+                                                    <template v-if="user.rating_pref === 1" class="star-rating-container">
+                                                        <!-- x stars (up to 5) rating -->
+                                                        <div class="star-container" v-for="n in 5">
+                                                            <img class="star-rating" v-if="getStars(result.imdb_rating) >= n" :src="icons.star_rating" :alt="'star number '+ n">
+                                                            <img class="star-rating" v-else :src="icons.star_rating_empty" alt="blank star">
+                                                        </div>
+                                                    </template><template v-else="user.rating_pref === 2" class="outof10_rating_container">
+                                                        <!-- x/10 numbers rating -->
+                                                        {{ result.imdb_rating }} <span class="outoften">/ 10</span>
+                                                    </template><template v-else="user.rating_pref === 3" class="percent_rating_container">
+                                                        <!-- x% rating -->
+                                                        {{ result.imdb_rating * 10 }}%
+                                                    </template><template v-else>
+                                                        Error
+                                                    </template>
+                                                </div> - 
+                                                <!-- Local Rating (rating based on user reviews) -->
+                                                <div class="result-local-rating">
+                                                    <template v-if="user.rating_pref === 1" class="star-rating-container">
+                                                        <!-- x stars (up to 5) rating -->
+                                                        <div class="star-container" v-for="n in 5">
+                                                            <img class="star-rating" v-if="getStars(result.local_rating) >= n" :src="icons.star_rating" :alt="'star number '+ n">
+                                                            <img class="star-rating" v-else :src="icons.star_rating_empty" alt="blank star">
+                                                        </div>
+                                                    </template><template v-else="user.rating_pref === 2" class="outof10_rating_container">
+                                                        <!-- x/10 numbers rating -->
+                                                        {{ result.local_rating }} <span class="outoften">/ 10</span>
+                                                    </template><template v-else="user.rating_pref === 3" class="percent_rating_container">
+                                                        <!-- x% rating -->
+                                                        {{ result.local_rating * 10 }}%
+                                                    </template><template v-else>
+                                                        Error
+                                                    </template>
+                                                </div> - 
+                                                <!-- Parental rating (Based on film, tv, music & content ratings) -->
+                                                <div class="parental_rating">
+                                                    {{ result.parental_rating }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section></template v-if="searchQuery !== ''"> 
+                        </li>
+                        <li>
+                            <!-- user avatar -->
+                            <img class="user-avatar" :src="user.avatarURL" alt="user profile" @click="currentPage = 'user_select';avatarClicked">
+                        </li>
+                        <li>
+                            <!-- *only show not kid, user settings -->
+                            <img v-if="user.isKid !== true" class="settings-icon" :src="icons.settings" alt="settings" @click="currentPage = 'settings';settingsClicked">
+                        </li>
+                        <li>
+                            <!-- *only show if admin, admin control panel access -->
+                            <img v-if="user.isAdmin === true" class="admin-icon" :src="icons.admin" alt="admin setttings" @click="currentPage = 'admin';adminClicked">
+                        </li>
+                        <li>
+                            <!-- logout -->
+                            <img class="logout-icon" :src="icons.logout" alt="logout user" @click="account = logoutAccount;currentPage = 'main';logoutClicked">
+                        </li>
+                    </ul>
+                </nav>
+            </section>`
+        </template></header>
+
+
+        <!-- login / register -->
+        <template class="main" v-if="currentPage === 'main'"><section class="main-wrapper">
+            Login:
+            <form id="login"> 
+                <label>Email: </label><input type="email" name="email" v-model="login.email"/><br>
+                <label>Account Password: </label><input type="password" name="password" v-model="login.password"/>
+                <input type="submit" name="submit" aria-label="Login" @click="loginClicked;account = getAccount(login.email, login.password)">
+            </form>
+
+            Register:
+            <form id="register">
+                <label>Email: </label><input type="email" placeholder="please enter account email" name="email"><br>
+                <label>New Account Password: </label><input type="password" name="password"><br>
+                <label>New Account Password (Again): </label><input type="password" name="passwordCheck"><br>
+                <input type="submit" name="submit" aria-label="Register">
+            </form>
+        </section></template>
+
+
+
+
+
+    </main>
+</body>
+<script src="js/main.js" type="module"></script>
+</html>
