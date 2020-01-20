@@ -24,9 +24,9 @@
                     <!-- Available Pages (Home, Movies, TV Shows, Music etc) -->
                     <h3 class="hidden">Media Navigation</h3>
                     <ul>
-                        <li @click="showMovies">Movies</li>
-                        <li @click="showShows">TV Shows</li>
-                        <li @click="showMusic">Music</li>
+                        <li @click="showMovies;currentPage = 'movies';searchResults = getSearchResults(searchQuery,currentPage,user)">Movies</li>
+                        <li @click="showShows;currentPage = 'shows';searchResults = getSearchResults(searchQuery,currentPage,user)">TV Shows</li>
+                        <li @click="showMusic;currentPage = 'music';searchResults = getSearchResults(searchQuery,currentPage,user)">Music</li>
                     </ul>
                 </nav>
             </section>
@@ -38,25 +38,26 @@
                     <ul>
                         <li>
                             <!-- search bar -->
-                            <img class="search-icon" :src="icons.search" alt="Search Icon" @click="searchClicked;searchResults = getSearchResults(searchQuery)"><input v-model="searchQuery" type="search" class="search-bar">
-                            <template v-if="searchResults !== '' || searchResults !== null"><section class="search-results">
+                            <img class="search-icon" :src="icons.search" alt="Search Icon" @click="searchClicked;searchResults = getSearchResults(searchQuery,currentPage,user)"><input v-model="searchQuery" type="search" class="search-bar">
+                            <template v-if="searchQuery !== '' && searchQuery !== null"><section class="search-results">
                                 <h4 class="hidden">Search Bar</h4>
                                 <div v-for="result in searchResults">
                                     <div class="result-container" @click="openPreview(result.media_type, result.local_id)">
                                         <div class="result-title">
-                                            <!-- show title (if music show album & artist) and year (if tv show, include end year) -->
+                                            <!-- show title (if music show album & artist), year (if tv show or artist, include end year) and length of media (unless artist) -->
                                             {{ result.title }} <span class="result_artist_album" v-if="result.media_type === 'music'">- {{ result.album }} - {{ result.artist }}</span>
                                             <img class="result-thumbnail" :src="result.thumbnail">
-                                            {{ result.year }}<span v-if="result.media_type === 'show'"> - {{ result.end_year }}</span>
+                                            {{ result.year }}<span v-if="result.media_type === 'show' || result.media_type === 'artist'"> - {{ result.end_year }}</span> <span class="result-length" v-if="result.media_type !== 'artist'">{{ result.length }}</span>
                                             </div>
                                         <div class="result-description">
-                                            <span class="result-genre">{{ result.genre }}</span> - <span class="result-keywords">{{ result.keywords }}</span>
-                                            {{ result.short_description }}
+                                            <!-- further description of media, genre, keywords (such as actors, themes, etc), and a short description (unless it's a song, because no one needs a short description of a song lol)  -->
+                                            <template v-if="result.media_type !== 'artist'"><span class="result-genre">{{ result.genre }}</span> - </template><span class="result-keywords">{{ result.keywords }}</span>
+                                            <template class="result-description-text" v-if="result.media_type !== 'song' && spoilerCheck(user.hideSpoilers,result.media_type)">{{ result.short_description }}</template>
                                             <div class="ratings">
-                                                <!-- IMDB Rating -->
-                                                <div class="result-imdb-rating">
+                                                <!-- IMDB Rating *only show if video media -->
+                                                <template v-if="result.media_type === 'movie' || result.media_type === 'show' || result.media_type === 'episode'"><div class="result-imdb-rating">
                                                     <template v-if="user.rating_pref === 1" class="star-rating-container">
-                                                        <!-- x stars (up to 5) rating -->
+                                                        <!-- x stars (up to 5) rating (rounds down at 0.5, up at 0.6) -->
                                                         <div class="star-container" v-for="n in 5">
                                                             <img class="star-rating" v-if="getStars(result.imdb_rating) >= n" :src="icons.star_rating" :alt="'star number '+ n">
                                                             <img class="star-rating" v-else :src="icons.star_rating_empty" alt="blank star">
@@ -70,7 +71,7 @@
                                                     </template><template v-else>
                                                         Error
                                                     </template>
-                                                </div> - 
+                                                </div> - </template>
                                                 <!-- Local Rating (rating based on user reviews) -->
                                                 <div class="result-local-rating">
                                                     <template v-if="user.rating_pref === 1" class="star-rating-container">
@@ -125,6 +126,7 @@
         <template class="main" v-if="currentPage === 'main'"><section class="main-wrapper">
             Login:
             <form id="login"> 
+                <!-- login to be implemented, get back into account with email admin@amiecollins.ca and password admin -->
                 <label>Email: </label><input type="email" name="email" v-model="login.email"/><br>
                 <label>Account Password: </label><input type="password" name="password" v-model="login.password"/>
                 <input type="submit" name="submit" aria-label="Login" @click="loginClicked;account = getAccount(login.email, login.password)">
@@ -132,6 +134,7 @@
 
             Register:
             <form id="register">
+                <!-- registration tbi until login system is created & member account storage is figured out -->
                 <label>Email: </label><input type="email" placeholder="please enter account email" name="email"><br>
                 <label>New Account Password: </label><input type="password" name="password"><br>
                 <label>New Account Password (Again): </label><input type="password" name="passwordCheck"><br>
