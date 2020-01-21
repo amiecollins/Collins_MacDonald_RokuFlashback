@@ -102,7 +102,7 @@
                         </li>
                         <li>
                             <!-- user avatar -->
-                            <img class="user-avatar" :src="user.avatarURL" alt="user profile" @click="currentPage = 'user_select';avatarClicked">
+                            <img class="user-avatar" :src="user.avatar.url" :alt="user.avatar.name + ' icon: Avatar for ' + user.name " @click="user = {};avatarClicked">
                         </li>
                         <li>
                             <!-- *only show not kid, user settings -->
@@ -114,7 +114,7 @@
                         </li>
                         <li>
                             <!-- logout -->
-                            <img class="logout-icon" :src="icons.logout" alt="logout user" @click="account = logoutAccount;currentPage = 'main';logoutClicked">
+                            <img class="logout-icon" :src="icons.logout" alt="logout user" @click="account = logoutAccount; user = {};currentPage = 'main';logoutClicked">
                         </li>
                     </ul>
                 </nav>
@@ -123,7 +123,8 @@
 
 
         <!-- login / register -->
-        <template class="main" v-if="currentPage === 'main'"><section class="main-wrapper">
+        <template class="main" v-if="currentPage === 'main' && account.id === 0"><section class="main-wrapper">
+            <h2>Login or Register</h2>
             Login:
             <form id="login"> 
                 <!-- login to be implemented, get back into account with email admin@amiecollins.ca and password admin -->
@@ -140,6 +141,19 @@
                 <label>New Account Password (Again): </label><input type="password" name="passwordCheck"><br>
                 <input type="submit" name="submit" aria-label="Register">
             </form>
+        </section></template>
+
+        <template class="user-select" v-if="account.canView && user === {}"><section class="user-select-wrapper">
+            <h1>Pick Your User</h1>
+            <div class="user-selection">
+                <div v-for="profile in account.users">
+                    <img class="user-avatar" :src="getUser(profile).avatar.url" :alt="getUser(profile).avatar.name + ' avatar for user ' + getUser(profile).name" @click="user = userCheck(profile)">
+                    <span class="user-name">{{ getUser(profile).name }}</span> - <img class="edit-profile-icon" :src="icons.edit_user" alt="edit this user">
+                    <input v-if="getUser(profile).password !== ''" type="password" name="password" v-model="user_select_password">
+                    <input type="user-submit" name="submit" :aria-label="'enter profile of ' + getUser(profile).name" @click="user = userCheck(profile)">
+                </div>
+            </div>
+            <img class="add-user-button" :src="icons.add_button" alt="add another user">
         </section></template>
     </main>
 </body>

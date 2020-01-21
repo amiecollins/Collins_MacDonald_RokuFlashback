@@ -117,6 +117,112 @@ const episodes = [
     }
 ]
 
+const account = [
+    {
+        id: 1,
+        email: "admin@amiecollins.ca",
+        password: "admin",
+        canView: true, // stores whether or not account has access to site (i.e. is 'paying')
+        user_ids: [
+            1, 2
+        ]
+    },
+    {
+        id: 2,
+        email: "kathleen@fanshaweonline.ca",
+        password: "admin",
+        canView: true,
+        user_ids: [
+            3
+        ]
+    }
+]
+
+const avatars = [
+    {
+        id: 1,
+        name: "Octotar",
+        url: "images/svg/user-icon1.svg"
+    },
+    {
+        id: 2,
+        name: "Giraffatar",
+        url: "images/svg/user-icon2.svg"
+    }
+]
+
+const users = [
+    {
+        id: 1,
+        name: "Amie",
+        password: "password",
+        avatar: {
+            id: 1,
+            name: "Octotar",
+            url: "images/svg/user-icon1.svg"
+        },
+        isKid: false,
+        restrictedRatings: "",
+        isAdmin: true,
+        showName: true,
+        favTags: "fantasy, comedy, adventure, thriller",
+        disTags: "action, horror",
+        hideSpoilers: 0, // 0 - off, 1 - hide episode description, 2 - hide all video descriptions
+        rating_pref: 1 // 1 - (5) stars, 2 - outof10, 3 - percent
+    },
+    {
+        id: 2,
+        name: "Felicity",
+        password: "",
+        avatar: {
+            id: 1,
+            name: "Octotar",
+            url: "images/svg/user-icon1.svg"
+        },
+        isKid: true,
+        restrictedRatings: "R, NSFW, NC-17, PG-13, Explicit, TV-14, TV-R",
+        isAdmin: false,
+        showName: false,
+        favTags: "",
+        disTags: "",
+        hideSpoilers: 1, // 0 - off, 1 - hide episode description, 2 - hide all video descriptions
+        rating_pref: 1 // 1 - (5) stars, 2 - outof10, 3 - percent
+    },
+    {
+        id: 3,
+        name: "Kathleen",
+        password: "password",
+        avatar: {
+            id: 2,
+            name: "Giraffatar",
+            url: "images/svg/user-icon2.svg"
+        },
+        isKid: false,
+        restrictedRatings: "",
+        isAdmin: true,
+        showName: true,
+        favTags: "",
+        disTags: "",
+        hideSpoilers: 0, // 0 - off, 1 - hide episode description, 2 - hide all video descriptions
+        rating_pref: 1 // 1 - (5) stars, 2 - outof10, 3 - percent
+    }
+]
+
+function getUser(userId) {
+    if (users[userId-1] !== null) {
+        return user[userId];
+    }
+    return user = {};
+}
+
+function userCheck(pw, id) {
+    if (pw === users.password) {
+        return getUser(id);
+    } else {
+        return blankuser = {};
+    }
+}
+
 function checkRestrictions(childUser, mediaData) {
     return mediaData;
 }
@@ -215,25 +321,19 @@ const vueApp = (() => {
     let vm = new Vue({
 
         data: {
-            currentPage: "home", // main, home, user_select, settings, movies, shows, music, video_preview, album_preview, artist_preview, video_player, music_player
+            currentPage: "main", // main, home, settings, movies, shows, music, video_preview, album_preview, artist_preview, video_player, music_player
             account: {
-                id: 1,
-                email: "admin@amiecollins.ca",
-                password: "admin"
+                id: 0,
+                email: null,
+                password: null,
+                canView: false,
+                users: [
+                    
+                ]
             },
+            user_select_password: "",
             user: {
-                id: 1,
-                name: "Amie",
-                password: "password",
-                isKid: false,
-                isAdmin: true,
-                avatarURL: "",
-                avatarALT: "",
-                showName: true,
-                favTags: "",
-                disTags: "",
-                hideSpoilers: 0, // 0 - off, 1 - hide episode description, 2 - hide all video descriptions
-                rating_pref: 1 // 1 - (5) stars, 2 - outof10, 3 - percent
+
             },
             login: {
                 email: "enter email",
@@ -249,7 +349,9 @@ const vueApp = (() => {
                 settings: "",
                 logout: "",
                 star_rating: "",
-                star_rating_empty: ""
+                star_rating_empty: "",
+                add_button: "",
+                edit_user: ""
             },
             images: {
                 moviesSelect: "",
@@ -307,23 +409,22 @@ const vueApp = (() => {
             },
             
             getAccount(accountemail, accountpassword) {
-                if (accountemail === "admin@amiecollins.ca" && accountpassword === "admin") {
-                    account = {
-                        id: 1,
-                        email: "admin@amiecollins.ca",
-                        password: "admin"
-                    }
-                    alert('Welcome admin');
-                    return account;
-                } else {
-                    blankaccount = {
-                        id: 0,
-                        email: null,
-                        password: null
-                    }
-                    alert('There was a problem');
-                    return blankaccount;
+                var blankaccount = {
+                    id: 0,
+                    email: null,
+                    password: null,
+                    canView: false,
+                    users: [
+
+                    ]
                 }
+                for (var a = 0; a < accounts.length; a++) {
+                    if (accountemail === accounts[a].email && accountspassword === accounts[a].password) {
+                        return account[a];
+                    }
+                }
+                alert('There was a problem');
+                return blankaccount;
             },
 
             showMovies() {
