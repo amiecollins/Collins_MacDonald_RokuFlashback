@@ -14,8 +14,8 @@
         <!-- HEADER BAR
             only show header bar if user is logged in and not viewing a video 
         -->
-        <header class="header-bar"><template class="top-header" v-if="currentPage !== 'player' && loggedIn(account)">
-            <h1 class="hidden">Header Navigation Bar</h1>
+        <header class="header-bar">
+            <h1 class="hidden">Welcome to Roku Flashback</h1><template class="top-header" v-if="currentPage !== 'player' && user.id > 0">
             <section class="header-left">
                 <h2 class="hidden">Logo & Navigation</h2>
                 <!-- left side of bar -->
@@ -102,7 +102,7 @@
                         </li>
                         <li>
                             <!-- user avatar -->
-                            <img class="user-avatar" :src="user.avatar.url" :alt="user.avatar.name + ' icon: Avatar for ' + user.name " @click="user = {};avatarClicked">
+                            <img v-if="user.avatar.url !== undefined" class="user-avatar" :src="user.avatar.url" :alt="user.avatar.name + ' icon: Avatar for ' + user.name " @click="user = {};avatarClicked">
                         </li>
                         <li>
                             <!-- *only show not kid, user settings -->
@@ -124,36 +124,45 @@
 
         <!-- login / register -->
         <template class="main" v-if="currentPage === 'main' && account.id === 0"><section class="main-wrapper">
-            <h2>Login or Register</h2>
+            <h2 class="hidden">Login or Register</h2>
             Login:
-            <form id="login"> 
+            <div id="login"> 
                 <!-- login to be implemented, get back into account with email admin@amiecollins.ca and password admin -->
                 <label>Email: </label><input type="email" name="email" v-model="login.email"/><br>
                 <label>Account Password: </label><input type="password" name="password" v-model="login.password"/>
-                <input type="submit" name="submit" aria-label="Login" @click="loginClicked;account = getAccount(login.email, login.password)">
-            </form>
+                <button name="login" @click="loginClicked;account = getAccount(login.email, login.password)">Login</button disabled="true">
+            </div>
 
             Register:
-            <form id="register">
+            <div id="register">
                 <!-- registration tbi until login system is created & member account storage is figured out -->
                 <label>Email: </label><input type="email" placeholder="please enter account email" name="email"><br>
                 <label>New Account Password: </label><input type="password" name="password"><br>
                 <label>New Account Password (Again): </label><input type="password" name="passwordCheck"><br>
-                <input type="submit" name="submit" aria-label="Register">
-            </form>
+                <button name="register">Register</button>
+            </div>
         </section></template>
 
-        <template class="user-select" v-if="account.canView && user === {}"><section class="user-select-wrapper">
-            <h1>Pick Your User</h1>
+        <template class="user-select" v-if="account.canView && user.id === 0"><section class="user-select-wrapper">
+            <h2>Pick Your User</h2>
             <div class="user-selection">
-                <div v-for="profile in account.users">
+                <div v-for="profile in account.user_ids">
                     <img class="user-avatar" :src="getUser(profile).avatar.url" :alt="getUser(profile).avatar.name + ' avatar for user ' + getUser(profile).name" @click="user = userCheck(profile)">
-                    <span class="user-name">{{ getUser(profile).name }}</span> - <img class="edit-profile-icon" :src="icons.edit_user" alt="edit this user">
-                    <input v-if="getUser(profile).password !== ''" type="password" name="password" v-model="user_select_password">
-                    <input type="user-submit" name="submit" :aria-label="'enter profile of ' + getUser(profile).name" @click="user = userCheck(profile)">
+                    <span class="user-name">{{ getUser(profile).name }}</span> - <img class="edit-user-icon" :src="icons.edit_user" alt="edit this user">
+                    <input v-if="getUser(profile).password !== ''" type="password" name="password" v-model="user_select_password[getUser(profile).id]">
+                    <button class="user-submit" name="submit" @click="user = userCheck(user_select_password[getUser(profile).id], profile);if (user.id !== 0) { currentPage='home' };return false">Enter Profile of {{ getUser(profile).name }}</button>
                 </div>
             </div>
-            <img class="add-user-button" :src="icons.add_button" alt="add another user">
+            <img class="add-user-button" :src="icons.add_button" alt="add another user" @click="currentPage === 'settings';user = {}">
+        </section></template>
+
+        <template class="settings" v-if="currentPage === 'settings'"><section class="settings-wrapper">
+            <div class="user-settings-select">
+                <div v-for="profile in account.user_ids">
+                    <img class="user-avatar" :src="getUser(profile).avatar.url" :alt="getUser(profile).avatar.name + ' avatar for user ' + getUser(profile).name" @click="user = userCheck(profile)">
+                    <span class="user-name">{{ getUser(profile).name }}</span> - <img class="edit-profile-icon" :src="icons.edit_user" alt="edit this user">
+                </div>
+            </div>
         </section></template>
     </main>
 </body>

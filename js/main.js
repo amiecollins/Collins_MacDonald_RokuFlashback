@@ -29,7 +29,8 @@ const movies = [
         short_description: "A young couple moves in to an apartment only to be surrounded by peculiar neighbors and occurrences. When the wife becomes mysteriously pregnant, paranoia over the safety of her unborn child begins to control her life.",
         url: "https://storage.cloud.google.com/roku_flashback_media/Rosemarys.Baby.1968.1080p.BluRay.x264.anoXmous/Rosemarys.Baby.1968.1080p.BluRay.x264.anoXmous_.mp4"
     }
-]
+];
+
 const artists = [
      {
         id: 1,
@@ -45,7 +46,8 @@ const artists = [
             1
         ]
     }
-]
+];
+
 const albums = [
     {
         id: 1,
@@ -64,7 +66,8 @@ const albums = [
             1
         ]
     }
-]
+];
+
 const songs = [
     {
         id: 1,
@@ -80,7 +83,7 @@ const songs = [
         keywords: "Cleaning Anthem",
         url: "https://storage.cloud.google.com/roku_flashback_media/The%20Coasters%20The%20Collection%2060%20tracks%20mp3%20cbr%20320/19%20The%20Coasters%20-%20Yakety%20Yak%20stereo.mp3"
     }
-]
+];
 const shows = [
     {
         id: 1,
@@ -98,7 +101,7 @@ const shows = [
             1
         ]
     }
-]
+];
 const episodes = [
     {
         id: 1,
@@ -115,9 +118,9 @@ const episodes = [
         short_description: "episode description goes here",
         url: ""
     }
-]
+];
 
-const account = [
+const accounts = [
     {
         id: 1,
         email: "admin@amiecollins.ca",
@@ -136,7 +139,7 @@ const account = [
             3
         ]
     }
-]
+];
 
 const avatars = [
     {
@@ -149,7 +152,7 @@ const avatars = [
         name: "Giraffatar",
         url: "images/svg/user-icon2.svg"
     }
-]
+];
 
 const users = [
     {
@@ -206,21 +209,42 @@ const users = [
         hideSpoilers: 0, // 0 - off, 1 - hide episode description, 2 - hide all video descriptions
         rating_pref: 1 // 1 - (5) stars, 2 - outof10, 3 - percent
     }
-]
+];
 
-function getUser(userId) {
-    if (users[userId-1] !== null) {
-        return user[userId];
-    }
-    return user = {};
+const blankuser = {
+    id: 0,
+    name: "",
+    password: "",
+    avatar: {
+        id: 0,
+        name: "404 Not Found",
+        url: ""
+    },
+    isKid: true,
+    restrictedRatings: "",
+    isAdmin: false,
+    showName: false,
+    favTags: "",
+    disTags: "",
+    hideSpoilers: 2, // 0 - off, 1 - hide episode description, 2 - hide all video descriptions
+    rating_pref: 0 // 1 - (5) stars, 2 - outof10, 3 - percent
+};
+
+const blankaccount = {
+    id: 0,
+    email: null,
+    password: null,
+    canView: false,
+    user_ids: [
+        0
+    ]
 }
 
-function userCheck(pw, id) {
-    if (pw === users.password) {
-        return getUser(id);
-    } else {
-        return blankuser = {};
+function getUserById(userId) {
+    if (users[userId-1] !== undefined) {
+        return users[userId-1];
     }
+    return blankuser;
 }
 
 function checkRestrictions(childUser, mediaData) {
@@ -242,7 +266,6 @@ function getResult(total, media, user, query) {
     // check in this order - title, year, keywords, short_description
     
     var results = media;
-    
     for (var v = 0; v < results.length; v++) {
         results[v].relevance = 0;
     }
@@ -321,22 +344,12 @@ const vueApp = (() => {
     let vm = new Vue({
 
         data: {
-            currentPage: "main", // main, home, settings, movies, shows, music, video_preview, album_preview, artist_preview, video_player, music_player
-            account: {
-                id: 0,
-                email: null,
-                password: null,
-                canView: false,
-                users: [
-                    
-                ]
-            },
-            user_select_password: "",
-            user: {
-
-            },
+            currentPage: "main", // main, home, settings, movies, shows, music, video_preview, album_preview, artist_preview, video_player, music_player, add_account
+            account: blankaccount,
+            user_select_password: [ "" ],
+            user: blankuser,
             login: {
-                email: "enter email",
+                email: "",
                 password: ""
             },
             register: {
@@ -349,6 +362,7 @@ const vueApp = (() => {
                 settings: "",
                 logout: "",
                 star_rating: "",
+                admin: "",
                 star_rating_empty: "",
                 add_button: "",
                 edit_user: ""
@@ -408,19 +422,22 @@ const vueApp = (() => {
                 console.log("login was clicked");
             },
             
-            getAccount(accountemail, accountpassword) {
-                var blankaccount = {
-                    id: 0,
-                    email: null,
-                    password: null,
-                    canView: false,
-                    users: [
+            getUser(userId) {
+                return getUserById(userId);
+            },
 
-                    ]
+            userCheck(pw, id) {
+                if (pw === getUserById(id).password) {
+                    return getUserById(id);
+                } else {
+                    return blankuser;
                 }
+            },
+
+            getAccount(accountemail, accountpassword) {
                 for (var a = 0; a < accounts.length; a++) {
-                    if (accountemail === accounts[a].email && accountspassword === accounts[a].password) {
-                        return account[a];
+                    if (accountemail === accounts[a].email && accountpassword === accounts[a].password) {
+                        return accounts[a];
                     }
                 }
                 alert('There was a problem');
@@ -457,9 +474,11 @@ const vueApp = (() => {
                 if (query !== "" && query !== null) {
                     // check for current page, send available media appropriate for that page
                     function addMediaType(collection, type) {
+
                         for (var a = 0; a < collection.length; a++) {
                             collection[a].media_type = type;
                         }
+                        
                         return collection;
                     }
                     if (page === "home") {
