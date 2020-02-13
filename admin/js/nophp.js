@@ -84,6 +84,7 @@ const songs = [
         url: "https://storage.cloud.google.com/roku_flashback_media/The%20Coasters%20The%20Collection%2060%20tracks%20mp3%20cbr%20320/19%20The%20Coasters%20-%20Yakety%20Yak%20stereo.mp3"
     }
 ];
+
 const shows = [
     {
         id: 1,
@@ -102,6 +103,7 @@ const shows = [
         ]
     }
 ];
+
 const episodes = [
     {
         id: 1,
