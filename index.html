@@ -44,11 +44,12 @@
                                 <div v-for="result in searchResults">
                                     <div class="result-container" @click="openPreview(result.media_type, result.local_id)">
                                         <div class="result-title">
-                                            <!-- show title (if music show album & artist), year (if tv show or artist, include end year) and length of media (unless artist) -->
-                                            {{ result.title }} <span class="result_artist_album" v-if="result.media_type === 'music'">- {{ result.album }} - {{ result.artist }}</span>
                                             <img class="result-thumbnail" :src="result.thumbnail">
-                                            {{ result.year }}<span v-if="result.media_type === 'show' || result.media_type === 'artist'"> - {{ result.end_year }}</span> <span class="result-length" v-if="result.media_type !== 'artist'">{{ result.length }}</span>
-                                            </div>
+                                            <!-- show title (if song show album & artist, if album just artist, if episode show tv show), year (if tv show or artist, include end year)-->
+                                            {{ result.title }} <span class="result_details" v-if="result.media_type === 'song'">from {{ result.album }}</span><span v-if="result.media_type === 'song' || result.media_type === 'album'"> by {{ result.artist }}</span><span v-if="result.media_type === 'episode'">from {{ tv.shows[result.showId - 1] }}</span>
+                                            <div class="parental_rating">{{ showRating(result.parental_rating) }}</div>
+                                            {{ result.year }}<span v-if="result.media_type === 'show' || result.media_type === 'artist'"> - {{ result.end_year }}</span></div>
+                                            <a @click="showDetails(result)">SEE MORE</a>
                                         <div class="result-description">
                                             <!-- further description of media, genre, keywords (such as actors, themes, etc), and a short description (unless it's a song, because no one needs a short description of a song lol)  -->
                                             <template v-if="result.media_type !== 'artist'"><span class="result-genre">{{ result.genre }}</span> - </template><span class="result-keywords">{{ result.keywords }}</span>
@@ -91,14 +92,11 @@
                                                     </template>
                                                 </div> - 
                                                 <!-- Parental rating (Based on film, tv, music & content ratings) -->
-                                                <div class="parental_rating">
-                                                    {{ result.parental_rating }}
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </section></template v-if="searchQuery !== ''"> 
+                            </section></template> 
                         </li>
                         <li>
                             <!-- user avatar -->
