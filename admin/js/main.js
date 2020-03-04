@@ -1,6 +1,6 @@
 import Vue from 'https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.esm.browser.js'
-import search from '/admin/js/components/search.js'
-import access from '/admin/js/data/access.js'
+import search from './Collins_MacDonald_RokuFlashback/admin/js/components/search.js'
+import access from './Collins_MacDonald_RokuFlashback/admin/js/data/access.js'
 
 const vueApp = (() => {
 
