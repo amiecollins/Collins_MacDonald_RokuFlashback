@@ -1,6 +1,6 @@
 import Vue from 'https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.esm.browser.js'
-import search from '/components/search.js'
-
+import search from '/admin/js/components/search.js'
+import access from '/admin/js/data/access.js'
 
 const vueApp = (() => {
 
@@ -8,9 +8,34 @@ const vueApp = (() => {
 
         data: {
             currentPage: "main", // main, home, settings, movies, shows, music, video_preview, album_preview, artist_preview, video_player, music_player, add_account
-            account: blankaccount,
+            account: {
+                id: 0,
+                email: null,
+                password: null,
+                canView: false,
+                user_ids: [
+                    0
+                ]
+            },
             user_select_password: [ "" ],
-            user: blankuser,
+            user: {
+                id: 0,
+                name: "",
+                password: "",
+                avatar: {
+                    id: 0,
+                    name: "404 Not Found",
+                    url: ""
+                },
+                isKid: true,
+                restrictedRating: "",
+                isAdmin: false,
+                showName: false,
+                favTags: "",
+                disTags: "",
+                hideSpoilers: 2, // 0 - off, 1 - hide episode description, 2 - hide all video descriptions
+                rating_pref: 0 // 1 - (5) stars, 2 - outof10, 3 - percent
+            },
             login: {
                 email: "",
                 password: ""
@@ -38,6 +63,17 @@ const vueApp = (() => {
             searchQuery: "",
             searchResults: null,
         },
+
+        created: function () {
+            console.log("trying to get data");
+            let url = "/admin/php/getMedia.php";
+
+            fetch(url)
+            //.then(res => res.json())
+            .then(res => console.log(res))
+            .catch(function(error) { console.error(error); });
+        },
+        
         methods: {
             loggedIn(currentAccount) {
                 if (currentAccount.id > 0) {
@@ -195,8 +231,8 @@ const vueApp = (() => {
                 }
             },
 
-            components: {
-
+            components: function () {
+                search
             }
         }
     }).$mount("#app");
