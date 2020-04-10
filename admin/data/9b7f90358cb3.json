@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "stellar-stream-265517",
+  "private_key_id": "9b7f90358cb33122c60b3ab5df45fc9bcfa584e4",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEuwIBADANBgkqhkiG9w0BAQEFAASCBKUwggShAgEAAoIBAQDJlJOD3iQuZo8M\ntwwQHaToYka0MlVHDuadT0ywqepDqtLwk2Vd6J0udVb/8FqIaSEaLbIq5o2ojxJ4\nMcg9MMSrImftvJuWEMQQtMLiDlfSBZlRoWV9XfQZnX9j4jBAN0MjkGwzyQ3c5Wn6\nnuDIsyKz6GkK+X6OgLF3vIaeMtcoe7OL6PGHc676CCaL8CoXkv2jtLM9Wiy/Oaw1\nwZ+V9ZZ8llTp2SRnQ4pf+qW+2+qp8/okuhAGjtT2WS5U63gH+mEiQJ224TGc23a6\nOpxjltm1JRJt9Y6SqvH4dop8js016+G1Gf+TL6oLwKSBvfM0O4XH1ktkXA28jYsX\nk5imky5hAgMBAAECggEAFh6rJ0u/jaXsaZlGhhgyqdtq5cgmKnN8o+N5R2OF1OIQ\nXpzWAT2OzfPLVa9yx8g9fSlphSKihc4ZWT4hOnG5Cwxt+hz5t7hkQ28KeZLYWTAL\nGHWM9PpT2GG7gmLmJ43I3MSy0uXrkwNLo1g+01cw5iwJJs6k8A84KiryXLa4fHUQ\nmUkphnnYa/Mp6zOt30fih0xHR8s77mXw8cTxDUPv2LmUHRkHpuKdJiJ9XCsU80zA\nvn8XBIj5Pu5c+WmUpMAw+5VpdzTNLgrieFxb5M+wxsTsqWSV63R/AyPBN55WWdq6\nQkYQC3j13R1fvGecNWKqhJ4DA8IvD90mkzCIUTY3qQKBgQDwjAWFqIyE9yK6gF+U\nghHvhOABPZNMYB3ITfslkhalFU00pCnwhb7ca84Ofm3PUecAxLG4rP2yFnybuaK9\nLbw5W0nrhcpYnQBn6hAqXls/xOvpeteapxuxFzvsW+81h+dkTwm7VPpV/tk9GNQK\nkCqq+KKhnbudCligu65MhTJ/zQKBgQDWh7gtUiMPiLRWcTXOzvwtGgOlTlcXj5Rg\nOPEccIPc0oIbEZUMHxe2zwp9EGSrUpRHafhgDI1IHOhXTxpzd7Jfh/Efj6UL1p0U\n/5Z+JzUsPvCvjPYAToGMrhVjQOiRkWTv/LyVR5aNF8VA3ZKMWrQk7mbrRAw34XR1\nljfv2k5M5QKBgQC0sZocUwZrg3HVA0XJOwPaFshmZijWAIWex+VWzayxCZVba84N\nXYqH7Xt2K8a1K+MJErgl790LABVOrV3wGgEAXPDkOTZM5nM9m/fUu9hzyKsmUh7P\nj6QfnUJoRI8meRZ6pVy8GhOKscviN1phLPbAQ9F28hPS3cjBxPojhRLwKQJ/Y7iy\n5F5J7e6d5ZC6cmfE0TJGf5Dq6wjS7+eILLAgm4U+9VY28muBmnijZ383TGwWgRvB\nWOR8yAin9+3NXd9GCyIl84XSMq6QVjJ4wit3jBm1x+S+dWYI0lwZlQmXEhOD2Aqj\nnsCoOu3Rw1U7ygJfussXDEWVaGRkvkQVvGi9/QKBgBos/q81QV7b3jVquYe+B8ZI\n7F7faDF4Itp1xh+d4Uv0p1hpgUm/mNwNz22OZSPn58QdgrjFuU+/W6ykeAlpcPeQ\nsfAdk2KOXJFg8iedxy9QsMasUXGg+qb41IxzqZB+w46SoXyr0fc8RV9Nzzd5P+XO\nkO1kYP7YJygj3KN+WjHU\n-----END PRIVATE KEY-----\n",
+  "client_email": "player@stellar-stream-265517.iam.gserviceaccount.com",
+  "client_id": "109735930961285295127",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/player%40stellar-stream-265517.iam.gserviceaccount.com"
+}

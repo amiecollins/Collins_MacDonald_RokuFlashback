@@ -1,4 +1,6 @@
-export const movies = [
+
+
+export default [
     {
         id: 1,
         title: "The Silence of the Lambs",
@@ -32,7 +34,7 @@ export const movies = [
         parental_rating: 0,
         genre: "Animation, Family, Fantasy",
         keywords: "Ilene Woods, James MacDonald, Eleanor Audley, Walt Disney Pictures, Fairy Tale",
-        short_description: "When Cinderella's cruel stepmother prevents her from attending the Royal Ball, she gets some unexpected help from the lovable mice Gus and Jaq, and from her Fairy Godmother.",
+        short_description: "When Cinderellas cruel stepmother prevents her from attending the Royal Ball, she gets some unexpected help from the lovable mice Gus and Jaq, and from her Fairy Godmother.",
         url: "https://storage.cloud.google.com/roku_flashback_media/movies/Cinderella.1950.720p.BluRay.x264.YIFY.mp4"
     },
     {
@@ -56,7 +58,7 @@ export const movies = [
         parental_rating: 2,
         genre: "Biography, Drama",
         keywords: "Susanna Kaysen, James Mangold, Winona Ryder, Angelina Jolie, Clea DuVall",
-        short_description: "Based on writer Susanna Kaysen's account of her 18-month stay at a mental hospital in the late 1960s.",
+        short_description: "Based on writer Susanna Kaysens account of her 18-month stay at a mental hospital in the late 1960s.",
         url: "https://storage.cloud.google.com/roku_flashback_media/movies/Girl.Interrupted.1999.HDTV.720p.Bluray.x264.anoXmous.mp4"
     },
     {
@@ -91,7 +93,7 @@ export const movies = [
         imdb_rating: 8.3,
         parental_rating: 0,
         genre: "Comedy, Musical, Romance",
-        keywords: "Gene Kelly, Donald O'Connor, Debbie Reynolds",
+        keywords: "Gene Kelly, Donald OConnor, Debbie Reynolds",
         short_description: "A silent film production company and cast make a difficult transition to sound.",
         url: "https://storage.cloud.google.com/roku_flashback_media/movies/Singin.in.the.Rain.1952.1080p.BluRay.H264.AAC-RARBG.mp4"
     },
@@ -178,42 +180,5 @@ export const movies = [
         keywords: "",
         short_description: "",
         url: "https://storage.cloud.google.com/roku_flashback_media/movies/Fantasia.2000.1999.720p.BrRip.x264.YIFY.mp4"
-    },
-    {
-        id: 16,
-        title: "Oliver and Company",
-        year: 1988,
-        thumbnail: "",
-        imdb_rating: 0,
-        parental_rating: 0,
-        genre: "",
-        keywords: "",
-        short_description: "",
-        url: "https://storage.cloud.google.com/roku_flashback_media/movies/Fantasia.2000.1999.720p.BrRip.x264.YIFY.mp4"
-    },
-    {
-        id: 17,
-        title: "",
-        year: 19,
-        thumbnail: "",
-        imdb_rating: 0,
-        parental_rating: 0,
-        genre: "",
-        keywords: "",
-        short_description: "",
-        url: ""
-    },
-    {
-        id: 18,
-        title: "",
-        year: 19,
-        thumbnail: "",
-        imdb_rating: 0,
-        parental_rating: 0,
-        genre: "",
-        keywords: "",
-        short_description: "",
-        url: ""
     }
-    
 ];

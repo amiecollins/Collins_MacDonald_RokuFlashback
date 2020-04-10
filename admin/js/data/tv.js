@@ -1,4 +1,4 @@
-export const shows = [
+export default [
     {
         id: 1,
         title: "Beverly Hillbillies",

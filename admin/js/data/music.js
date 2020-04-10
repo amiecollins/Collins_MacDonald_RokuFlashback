@@ -266,7 +266,7 @@ export const artists = [
     }
 ];
 
-export const albums = [
+export default [
     {
        id: 1,
        title: "The Coasters: Singles",
@@ -523,7 +523,7 @@ export const albums = [
         id: 19,
         title: "Best of the Chordettes",
         year: 19,
-        artist_id:,
+        artist_id: 0,
         thumbnail: "",
         parental_rating: 0,
         genre: "",
@@ -537,7 +537,7 @@ export const albums = [
         id: 20,
         title: "",
         year: 19,
-        artist_id:,
+        artist_id: 0,
         thumbnail: "",
         parental_rating: 0,
         genre: "",
@@ -553,7 +553,7 @@ export const songs = [
    {
        id: 1,
        title: "Yakety Yak",
-       year: 1991,
+       year: 1958,
        artist: "The Coasters",
        artist_id: 1,
        album_id: 1,
