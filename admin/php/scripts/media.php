@@ -70,12 +70,13 @@ function getMedia($tblname){
     $get_media_query = 'SELECT * FROM tbl_'.$tblname;
     $get_media_set = $pdo->query($get_media_query);
     $get_media_results = [];
-    $rows = $get_media_set->fetch(PDO::FETCH_ASSOC);
-    for($i = 0;$i>count($rows);$i++) {
-        $get_media_results[i] = $rows[i];
+    
+    while($get_media_results[] = $get_media_set->fetch(PDO::FETCH_NUM)) {
+        $get_media_results[] = $get_media_set->fetch(PDO::FETCH_NUM);
     }
-    if ($rows){
-        return implode("\n",$rows);
+    
+    if ($get_media_results){
+        return $get_media_results;
     } else{
         return 'There was a problem acessing this info';
     }

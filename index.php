@@ -2,7 +2,7 @@
 require_once './admin/php/load.php';
 // confirm_logged_in();
 $movies = getMedia("movies");
-
+$songs = getMedia("songs");
 
 ?>
 
@@ -20,14 +20,14 @@ $movies = getMedia("movies");
         <h1 class="hidden">Roku Flashback Viewer</h1>
         <header></header>
         <section class="main"><h2 class="hidden">Welcome to the Golden Years</h2>
-        <?php echo $movies ?>
-            <!-- <home>
-                <music></music>
+        <?php foreach($songs as $item) { echo implode("\n", $item); } ?>
+            <home :movies="<?php echo $movies ?>">
+                <!-- <music></music>
                 <tvshows></tvshows>
-                <music></music>
+                <music></music> -->
             </home>
             
-            <player v-if="selectedVideo.url != ''" :video="selectedVideo">
+            <!-- <player v-if="selectedVideo.url != ''" :video="selectedVideo">
                 <comments :video="video.title"></comments>
             </player> -->
 
