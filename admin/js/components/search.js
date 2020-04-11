@@ -14,11 +14,11 @@ export default {
 
     methods: {
 
-        getResult: function(userId, query, page) {
+        search: function(query, page) {
             
             
             var dataType = this.checkList;
-            var results = media;
+            var results = [ ...this.movies, ...this.episodes, ...this.songs];
 
             for (var dataPhase = 0; dataPhase < dataType.length; dataPhase++) { // repeat while there is still data phases left
                 for (var x = 0; x < results.length; x++) {
@@ -46,40 +46,6 @@ export default {
             return sorted;
         },
         
-        getMediaData: function (media_type, id) {
-            if (media_type === "movie") {
-                return movies.find(x => x.id === id);
-            } else if (media_type === "show") {
-                return tv.shows.find(x => x.id === id);
-            } else if (media_type === "episode") {
-                return tv.episodes.find(x => x.id === id);
-            } else if (media_type === "album") { 
-                return music.albums.find(x => x.id === id);
-            } else if (media_type === "song") {
-                return music.songs.find(x => x.id === id);
-            } else if (media_type === "artist") {
-                return music.artists.find(x => x.id === id); 
-            } else {
-                alert("Error");
-                return null;
-            }
-        },
-
-        AddMediaType: function (collection, type) {
-            for (var a = 0; a < collection.length; a++) {
-                collection[a].media_type = type;
-                collection[a].relevance = 0;
-                switch (type) {
-                    case "episode": {
-                        collection[a].thumbnail = tv.shows[collection[a].show_id].thumbnail;
-                    }
-                    case "song": {
-                        collection[a].thumbnail = music.albums[collection[a].album_id].thumbnail;
-                    }
-                }
-            }
-            return collection;
-        },
         
         checkRelevance: function (mediaData, dataType, searchQuery) {
             var score = 0;

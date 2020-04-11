@@ -48,9 +48,9 @@ const vueApp = (() => {
                 col80 = [],
                 col90 = []
             ],
-            movies = [],
-            songs = [],
-            episodes = []
+            movies: [],
+            songs: [],
+            episodes: []
         },
         methods: {
                 
