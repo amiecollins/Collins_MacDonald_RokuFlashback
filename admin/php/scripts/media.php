@@ -65,7 +65,36 @@ function createSong ($title, $artist, $year, $thumbnail, $parentalrating, $genre
 
 }
 
-function getMedia($tblname){
+function createEpisode ($title, $tvshow, $year, $season, $episode, $thumbnail, $parentalrating, $genre, $keywords, $shortdesc, $link) {
+    $pdo = Database::getInstance()->getConnection();
+    $create_episode_query = 'INSERT INTO tbl_episodes(title, tvshow, year, season, episode, thumbnail, parental_rating, genre, keywords, short_description, link) VALUES (:title, :tvshow, :year, :season, :episode, :thumbnail, :parental_rating, :genre, :keywords, :short_description, :link )';
+    
+
+    $create_episode_set = $pdo->prepare($create_episode_query);
+    $create_episode_result = $create_episode_set->execute(array(
+        ':title'=>$title,
+        ':tvshow'=>$tvshow,
+        ':year'=>$year,
+        ':episode'=>$episode,
+        ':season'=>$season,
+        ':thumbnail'=>$thumbnail,
+        ':parental_rating'=>$parentalrating,
+        ':genre'=>$genre,
+        ':keywords'=>$keywords,
+        ':short_description'=>$shortdesc,
+        ':link'=>$link
+    ));
+    if($create_episode_result){
+        return $title.' from '.$tvshow.' has been added';
+    }else{
+        return 'The song did not go through';
+    }
+}
+
+
+
+
+function getMedia($tblname) {
     $pdo = Database::getInstance()->getConnection();
     $get_media_query = 'SELECT * FROM tbl_'.$tblname;
     $get_media_set = $pdo->query($get_media_query);
@@ -80,4 +109,4 @@ function getMedia($tblname){
     } else{
         return 'There was a problem acessing this info';
     }
-}
+};

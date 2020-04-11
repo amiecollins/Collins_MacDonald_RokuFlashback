@@ -1,51 +1,23 @@
-import movies from '../data/movies.js'
-import music from '../data/music.js'
-import tv from '../data/tv.js'
-import access from '../data/access.js'
 
 
 export default {
 
     data: function () {
-        total: 10;
-        checkList: ["title", "year", "keywords", "genre", "short_description"];
+        return {
+            total: 10,
+            checkList: ["title", "year", "keywords", "genre", "short_description"],
+            results = []
+        }
     },
 
-    props: ["query", "page"],
+    props: ["page", "rawquery", "movies", "songs", "episodes"],
 
     methods: {
 
         getResult: function(userId, query, page) {
             
-            var media = [];
-
-            if (page === "home") {
-                media = [ ...this.addMediaType(movies, "movie"), ...this.addMediaType(tv.hows, "show"), ...this.addMediaType(music.artists, "artist"), ...this.addMediaType(music.albums, "album") ];
-            } else if (page === "movies") {
-                media = [ ...this.addMediaType(movies, "movie") ];
-            } else if (page === "shows") {
-                media = [ ...this.addMediaType(tv.shows, "show"), ...this.addMediaType(tv.episodes, "episode") ];
-            } else if (page === "music") {
-                media = [ ...this.addMediaType(music.songs, "song"), ...this.addMediaType(music.artists, "artist"), ...this.addMediaType(music.albums, "album") ];
-            }
-            // check if user is child
-            if (userId.isKid) {
-                // remove any content not parent approved
-                var parent_approved_media = [];
-                for (var i = 0; i < media; i++) {
-                    if (access.checkRestrictions(userId, media[i].parental_rating)) {
-                        parent_approved_media.push(media[i]);
-                    }
-                }
-            }
-            // take out all characters that might mess with system, set to lower case (data checked will be set to lowercase as well)
-            query = query.replace(/[^a-zA-Z0-9]/g, "");
-            query = query.toLowerCase();
-            query = query.split(" ");
-            var dataType = this.checkList;
-            // check relevance of each piece of media
-            // check in this order - title, year, keywords, short_description
             
+            var dataType = this.checkList;
             var results = media;
 
             for (var dataPhase = 0; dataPhase < dataType.length; dataPhase++) { // repeat while there is still data phases left

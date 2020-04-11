@@ -48,10 +48,10 @@ require_once 'load.php';
     <form action="admin_createmedia.php" method="post">
     
     <label>Media Type</label>
-    <select name="type" value="song">
-        <option value="song">Song</option>
+    <select name="type" value="episode">
         <option value="episode">Episode</option>
         <option value="movie">Movie</option>
+        <option value="song">Song</option>
     </select>
     <br><br>
     <label>Title</label>
