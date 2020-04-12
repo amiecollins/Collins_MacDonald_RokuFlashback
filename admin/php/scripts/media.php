@@ -111,6 +111,34 @@ function getMedia($tblname) {
 };
 
 
-function getCollection($sort, $col, $page) {
+function getMovies($min, $max) {
+    $pdo = Database::getInstance()->getConnection();
+    $get_movies_query = 'SELECT title FROM tbl_movies WHERE year >= '.$min.' AND year < '.$max;
+    $get_movies_set = $pdo->query($get_movies_query);
+    $get_movies_results = [];
+    
+    while($get_movies_results[] = $get_movies_set->fetch(PDO::FETCH_NUM)) {
+        $get_movies_results[] = $get_movies_set->fetch(PDO::FETCH_NUM);
+    }
+    
+    if ($get_movies_results){
+        return "'".implode("','", $get_movies_results)."'";
+    } else{
+        return 'There was a problem acessing this info';
+    }
+}
 
+function getMovie($title) {
+    $pdo = Database::getInstance()->getConnection();
+    $get_movie_query = 'SELECT * FROM tbl_movies WHERE title = "'.$title.'"';
+    $get_movie_set = $pdo->query($get_movie_query);
+    $get_movie_results = [];
+    
+    $get_movie_results[] = $get_movie_set->fetch(PDO::FETCH_ASSOC);
+    
+    if ($get_movie_results){
+        return json_encode($get_movie_results);
+    } else{
+        return 'There was a problem acessing this info';
+    }
 }
