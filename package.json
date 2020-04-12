@@ -1,0 +1,25 @@
+{
+  "name": "collins_macdonald_rokuflashback",
+  "version": "1.0.0",
+  "description": "Audio-Video application, Interactive Media Design W20",
+  "main": "index.html",
+  "dependencies": {
+    "@google-cloud/storage": "^4.7.0",
+    "google-auth-library": "^6.0.0",
+    "require": "^2.4.20"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amiecollins/Collins_MacDonald_RokuFlashback.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/amiecollins/Collins_MacDonald_RokuFlashback/issues"
+  },
+  "homepage": "https://github.com/amiecollins/Collins_MacDonald_RokuFlashback#readme"
+}

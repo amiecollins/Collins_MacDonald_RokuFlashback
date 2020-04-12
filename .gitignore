@@ -2,3 +2,6 @@
 working_files
 assignment_specs
 .DS_Store
+node_modules
+old
+assignment_specs

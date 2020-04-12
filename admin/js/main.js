@@ -1,5 +1,34 @@
 import Vue from 'https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.esm.browser.js'
-import search from '/components/search.js'
+import search from './components/search.js'
+
+const blankuser = {
+    id: 0,
+    name: "",
+    password: "",
+    avatar: {
+        id: 0,
+        name: "404 Not Found",
+        url: ""
+    },
+    isKid: true,
+    restrictedRating: "",
+    isAdmin: false,
+    showName: false,
+    favTags: "",
+    disTags: "",
+    hideSpoilers: 2, // 0 - off, 1 - hide episode description, 2 - hide all video descriptions
+    rating_pref: 0 // 1 - (5) stars, 2 - outof10, 3 - percent
+};
+
+const blankaccount = {
+    id: 0,
+    email: null,
+    password: null,
+    canView: false,
+    user_ids: [
+        0
+    ]
+}
 
 
 const vueApp = (() => {
@@ -38,6 +67,7 @@ const vueApp = (() => {
             searchQuery: "",
             searchResults: null,
         },
+
         methods: {
             loggedIn(currentAccount) {
                 if (currentAccount.id > 0) {
@@ -193,11 +223,10 @@ const vueApp = (() => {
                     alert("Error");
                     return "main";
                 }
-            },
-
-            components: {
-
             }
+        },
+        components: {
+            search
         }
     }).$mount("#app");
 
